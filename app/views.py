@@ -1,9 +1,10 @@
 from flask import redirect, url_for
 from flask_appbuilder.models.sqla.interface import SQLAInterface
 from flask_appbuilder import ModelView, expose
-from dateutil import parser
 from .models import Movie
-from .utils import fetch_movie_data
+from .repositories import SQLAlchemyMovieRepository
+from .services import MovieServiceImpl
+from .utils import WikiDataMovieService
 from . import appbuilder
 
 class MovieModelView(ModelView):
@@ -13,26 +14,29 @@ class MovieModelView(ModelView):
 
     @expose("/load_data/")
     def load_data(self):
-        if not self.appbuilder.get_session.query(Movie).count():
-            data = fetch_movie_data()
+        movie_repo = SQLAlchemyMovieRepository(appbuilder.get_session)
+        movie_service = MovieServiceImpl(movie_repo)
+        if not movie_service.get_movies():
+            wiki_data_movie_service = WikiDataMovieService()
+            data = wiki_data_movie_service.fetch_movies()
             if data:
-                for row in data['results']['bindings']:
-                    movie_title = row['movieLabel']['value']
-                    imdb_id = row['imdb_id']['value']
-                    latest_publication_date_str = row['latest_publication_date']['value']
-                    latest_publication_date = parser.parse(latest_publication_date_str).date()
+                movies = []
+                for row in data:
+                    movie_title, imdb_id = row
+                    movie = Movie(title=movie_title, imdb_id=imdb_id)
+                    movies.append(movie)
 
-                    movie = Movie(title=movie_title, release_date=latest_publication_date, imdb_id=imdb_id)
-                    self.appbuilder.get_session.add(movie)
-
-                self.appbuilder.get_session.commit()
+                movie_service.store_movies(movies)
 
         return redirect(url_for("MovieModelView.list"))
-    
+
     @expose("/drop_data/")
     def drop_data(self):
-        self.appbuilder.get_session.query(Movie).delete()
-        self.appbuilder.get_session.commit()
+        movie_repo = SQLAlchemyMovieRepository(appbuilder.get_session)
+        movie_service = MovieServiceImpl(movie_repo)
+        for movie in movie_service.get_movies():
+            appbuilder.get_session.delete(movie)
+        appbuilder.get_session.commit()
 
         return redirect(url_for("MovieModelView.list"))
 

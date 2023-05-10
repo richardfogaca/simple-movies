@@ -20,7 +20,6 @@ class SQLAlchemyMovieRepository(MovieRepository):
         return self.session.query(Movie).all()
 
     def store_movies(self, movies: List[Tuple[str, str]]) -> None:
-        for movie_title, imdb_id in movies:
-            movie = Movie(title=movie_title, imdb_id=imdb_id)
+        for movie in movies:
             self.session.add(movie)
         self.session.commit()
