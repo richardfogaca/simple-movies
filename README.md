@@ -14,7 +14,7 @@ Follow these steps to set up the project:
 1. Clone the repository:
 
 ```bash
-$ git clone https://github.com/richardfogaca/simplemovies.git
+$ git clone git@github.com:richardfogaca/simple-movies.git
 $ cd simplemovies
 ```
 
