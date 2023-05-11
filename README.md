@@ -14,7 +14,7 @@ Follow these steps to set up the project:
 1. Clone the repository:
 
 ```bash
-$ git clone https://github.com/richardfogaca/simplemovies.git
+$ git clone git@github.com:richardfogaca/simple-movies.git
 $ cd simplemovies
 ```
 
@@ -46,11 +46,13 @@ $ export FLASK_APP=SimpleApp/run.py
 1. Create the database tables:
 
 ```python
+$ python3
 >>> from app import db
 >>> db.create_all()
+>>> exit()
 ```
 
-2. To create an admin user, run:
+2. To create an admin user, run the following command and fill the requested data.
 
 ```python
 (venv) $ flask fab create-admin
@@ -62,9 +64,14 @@ $ export FLASK_APP=SimpleApp/run.py
 ```python
 (venv) $ python3 run.py
 ```
+The application will start on the following URL:
+http://127.0.0.1:5000
 
-2. To load movies data use the following endpoint. This will fetch the data from wikidata and list using Flask-AppBuilder
+2. To load movies data use the following endpoint:
 http://127.0.0.1:5000/movies/load_data/
+
+This will fetch the data from wikidata and redirect to the list endpoint:
+http://127.0.0.1:5000/movies/list/
 
 3. If you would like to delete all data from the database, just use the folowing endpoint:
 http://127.0.0.1:5000/movies/drop_data/
