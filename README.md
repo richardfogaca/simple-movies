@@ -63,8 +63,11 @@ $ export FLASK_APP=SimpleApp/run.py
 (venv) $ python3 run.py
 ```
 
-2. To load movies data use the following endpoint. This will fetch the data from wikidata and list using Flask-AppBuilder
+2. To load movies data use the following endpoint:
 http://127.0.0.1:5000/movies/load_data/
+
+This will fetch the data from wikidata and redirect to the list endpoint:
+http://127.0.0.1:5000/movies/list/
 
 3. If you would like to delete all data from the database, just use the folowing endpoint:
 http://127.0.0.1:5000/movies/drop_data/
