@@ -46,6 +46,7 @@ $ export FLASK_APP=SimpleApp/run.py
 1. Create the database tables:
 
 ```python
+$ python3
 >>> from app import db
 >>> db.create_all()
 ```
