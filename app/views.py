@@ -1,3 +1,4 @@
+from dateutil import parser
 from flask import redirect, url_for
 from flask_appbuilder.models.sqla.interface import SQLAInterface
 from flask_appbuilder import ModelView, expose
@@ -22,8 +23,9 @@ class MovieModelView(ModelView):
             if data:
                 movies = []
                 for row in data:
-                    movie_title, imdb_id = row
-                    movie = Movie(title=movie_title, imdb_id=imdb_id)
+                    movie_title, imdb_id, release_date = row
+                    release_date = parser.parse(release_date).date()
+                    movie = Movie(title=movie_title, imdb_id=imdb_id, release_date=release_date)
                     movies.append(movie)
 
                 movie_service.store_movies(movies)
