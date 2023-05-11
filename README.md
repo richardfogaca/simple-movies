@@ -49,9 +49,10 @@ $ export FLASK_APP=SimpleApp/run.py
 $ python3
 >>> from app import db
 >>> db.create_all()
+>>> exit()
 ```
 
-2. To create an admin user, run:
+2. To create an admin user, run the following command and fill the requested data.
 
 ```python
 (venv) $ flask fab create-admin
@@ -63,6 +64,8 @@ $ python3
 ```python
 (venv) $ python3 run.py
 ```
+The application will start on the following URL:
+http://127.0.0.1:5000
 
 2. To load movies data use the following endpoint:
 http://127.0.0.1:5000/movies/load_data/
